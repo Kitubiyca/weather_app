@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:weather_app/services/data_structures.dart';
 import 'package:weather_app/services/manager.dart';
 
@@ -33,7 +33,14 @@ class _FavouritesState extends State<Favourites> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
-        leading: ((setIsChanged) ? checkButton() : returnButton()),
+        leading: AnimatedCrossFade(
+          duration: const Duration(milliseconds: 200),
+        firstChild: checkButton(),
+        secondChild: returnButton(),
+        crossFadeState: (setIsChanged)
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+      ),
         title: Text('Избранное', style: TextStyle(color: Theme.of(context).textTheme.bodyText1!.color),),
       ),
         body: generateFavourites(),
@@ -54,13 +61,29 @@ class _FavouritesState extends State<Favourites> {
       style: NeumorphicStyle(oppositeShadowLightSource: true, depth: -3, color: Theme.of(context).textTheme.headline4!.color, boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),),
       child: ListTile(
         onTap: (() async {
-          await Loading.reloadData(UserData.favourites.elementAt(i));
-          setState(() {});
+          if(UserData.favourites.elementAt(i)!=UserData.cityData.name) {
+            await Loading.reloadData(UserData.favourites.elementAt(i));
+            setState(() {});
+          }
         }),
-        title: Text(UserData.favourites.elementAt(i), style: (UserData.favourites.elementAt(i) == UserData.cityData.name ? TextStyle(fontSize: 16, color: Colors.blueAccent) : TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyText1!.color)),),
+        title: AnimatedCrossFade(
+          duration: const Duration(milliseconds: 200),
+          firstChild: Text(UserData.favourites.elementAt(i), style: TextStyle(fontSize: 16, color: Colors.blueAccent)),
+          secondChild: Text(UserData.favourites.elementAt(i), style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyText1!.color)),
+          crossFadeState: (UserData.favourites.elementAt(i) == UserData.cityData.name)
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+        ),
         trailing: Neumorphic(
           style: NeumorphicStyle(depth: 0, color: Theme.of(context).textTheme.bodyText2!.color, boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),),
-          child: (toRemove.contains(UserData.favourites.elementAt(i)) ? addIcon(i) : removeIcon(i)),
+          child: AnimatedCrossFade(
+          duration: const Duration(milliseconds: 200),
+          firstChild: addIcon(i),
+          secondChild: removeIcon(i),
+          crossFadeState: (toRemove.contains(UserData.favourites.elementAt(i)))
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+        )
         ),
       ),
     );

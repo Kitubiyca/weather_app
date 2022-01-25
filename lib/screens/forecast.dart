@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide AnimatedScale;
+import 'package:flutter/material.dart';
 import 'package:storyswiper/storyswiper.dart';
 import 'package:weather_app/services/data_structures.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';

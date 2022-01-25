@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:weather_app/services/data_structures.dart';
 import 'package:weather_app/services/manager.dart';
-import 'home_screen.dart';
 
 class Loading extends StatelessWidget {
   const Loading({Key? key}) : super(key: key);

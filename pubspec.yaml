@@ -35,7 +35,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   expandable_bottom_sheet: ^1.1.1+1
   storyswiper: ^1.0.1
-  flutter_neumorphic: ^3.1.0
   http: ^0.13.4
   flutter_spinkit: ^5.1.0
   flutter_neumorphic_null_safety: ^3.2.4

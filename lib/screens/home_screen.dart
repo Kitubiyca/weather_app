@@ -1,7 +1,5 @@
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
-import 'package:flutter/material.dart' hide AnimatedScale;
-
-//import 'package:flutter_neumorphic/flutter_neumorphic.dart' hide AnimatedScale;
+import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic_null_safety/flutter_neumorphic.dart';
 import 'package:weather_app/services/data_structures.dart';
 
@@ -81,25 +79,10 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           }),
           key: key,
           background: background(context),
-          persistentHeader: persistentHeaderExpanded(context),
-          //AnimatedSwitcher(
-          //duration: const Duration(milliseconds: 300),
-          //transitionBuilder: (Widget child, Animation<double> animation) {
-          //  return ScaleTransition(child: child, scale: animation);},
-          //child:
-          //AnimatedCrossFade(
-          //  duration: const Duration(milliseconds: 200),
-          //  firstChild: persistentHeaderExpanded(context),
-          //  secondChild: persistentHeaderContracted(context),
-          //  crossFadeState: (expStat == ExpansionStatus.expanded) ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-          //),
+          persistentHeader: persistentHeader(context),
           expandableContent: expandableContent(context),
         ));
   }
-
-  //((expStat == ExpansionStatus.expanded)
-  //? persistentHeaderExpanded(context)
-  //    : persistentHeaderContracted(context)),
 
   Widget drawerElement(
       BuildContext context, String image, String label, String navigate) {
@@ -266,7 +249,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         ));
   }
 
-  Widget persistentHeaderExpanded(BuildContext context) {
+  Widget persistentHeader(BuildContext context) {
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
       child: Container(
@@ -339,52 +322,6 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-              ])),
-    );
-  }
-
-  Widget persistentHeaderContracted(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
-      child: Container(
-          height: 240,
-          color: Theme.of(context).primaryColor,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const SizedBox(
-                  height: 5,
-                ),
-                expandableDash(context),
-                const SizedBox(
-                  height: 5,
-                ),
-                cardsRow(context),
-                TextButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).primaryColor),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                              side: BorderSide(
-                                  color: (SettingsVars.theme
-                                      ? Colors.white
-                                      : Colors.blue))))),
-                  child: Text('Прогноз на неделю',
-                      style: TextStyle(
-                        color: (SettingsVars.theme
-                            ? Colors.white
-                            : Colors.blueAccent),
-                        fontSize: 15,
-                      )),
-                  onPressed: () => {
-                    Navigator.pushNamed(context, 'forecast', arguments: city)
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                )
               ])),
     );
   }

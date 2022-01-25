@@ -39,7 +39,14 @@ class _SearchState extends State<Search> {
         child: Scaffold(
           backgroundColor: Theme.of(context).primaryColor,
           appBar: AppBar(
-            leading: ((isSearching || _input.text!= '') ? clearButton() : returnButton()),
+            leading: AnimatedCrossFade(
+              duration: const Duration(milliseconds: 200),
+          firstChild: clearButton(),
+          secondChild: returnButton(),
+          crossFadeState: (isSearching || _input.text!= '')
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+        ),
             iconTheme: IconThemeData(
                 color: Theme.of(context).textTheme.bodyText1!.color),
             backgroundColor: Theme.of(context).primaryColor,
@@ -97,6 +104,7 @@ class _SearchState extends State<Search> {
 
   Widget _buildSearchField() {
     return TextField(
+      onSubmitted: (value) => request(),
           controller: _input,
           autofocus: true,
           decoration: InputDecoration(
@@ -131,8 +139,22 @@ class _SearchState extends State<Search> {
         await Loading.reloadData(result[i]);
         setState(() {});
       }),
-      title: Text(result[i], style: (result[i] == UserData.cityData.name ? TextStyle(fontSize: 16, color: Colors.blueAccent) : TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyText1!.color)),),
-      trailing: (UserData.favourites.contains(result[i]) ? deleteStar(i) : addStar(i)),
+      title: AnimatedCrossFade(
+        duration: const Duration(milliseconds: 200),
+        firstChild: Text(result[i], style: TextStyle(fontSize: 16, color: Colors.blueAccent)),
+        secondChild: Text(result[i], style: TextStyle(fontSize: 16, color: Theme.of(context).textTheme.bodyText1!.color)),
+        crossFadeState: (result[i] == UserData.cityData.name)
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+      ),
+      trailing: AnimatedCrossFade(
+        duration: const Duration(milliseconds: 200),
+    firstChild: deleteStar(i),
+    secondChild: addStar(i),
+    crossFadeState: (UserData.favourites.contains(result[i]))
+    ? CrossFadeState.showFirst
+        : CrossFadeState.showSecond,
+    ),
     );
   }
 
